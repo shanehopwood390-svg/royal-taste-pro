@@ -1,0 +1,6 @@
+backups/
+data/
+api.js
+server.js
+.env
+node_modules/
