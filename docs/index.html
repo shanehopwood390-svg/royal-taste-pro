@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10271d">
+  <meta name="description" content="Discover delicious food and a memorable dining experience at Royal Taste.">
+  <title>Royal Taste | Premium Dining</title>
+
+  <style>
+    :root {
+      --green: #10271d;
+      --green-light: #1b3b2c;
+      --cream: #fffaf0;
+      --gold: #d9b56d;
+      --text: #252a25;
+      --muted: #777d74;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Arial, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+    }
+
+    button, input { font: inherit; }
+
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      padding: 9px 5%;
+      background: var(--gold);
+      color: var(--green);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    header {
+      background: var(--green);
+      color: white;
+      padding: 17px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-family: Georgia, serif;
+      font-size: 25px;
+      font-weight: bold;
+      color: var(--gold);
+    }
+
+    .brand small {
+      display: block;
+      color: #e7e4d8;
+      font: 10px system-ui, sans-serif;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    nav a:hover { color: var(--gold); }
+
+    .cart-button, .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 6px;
+      padding: 12px 18px;
+      background: var(--gold);
+      color: var(--green);
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .hero {
+      background:
+        linear-gradient(90deg, rgba(9,25,17,.95), rgba(9,25,17,.65)),
+        url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=85')
+        center/cover;
+      color: white;
+      padding: 95px 7%;
+      min-height: 420px;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-content { max-width: 650px; }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    h1 {
+      font: clamp(42px, 7vw, 76px)/1.05 Georgia, serif;
+      margin: 18px 0;
+    }
+
+    .hero p {
+      max-width: 500px;
+      color: #e7e7df;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--gold);
+      border-radius: 6px;
+      padding: 12px 18px;
+      color: white;
+      font-weight: 650;
+    }
+
+    section { padding: 65px 5%; }
+
+    .section-heading {
+      text-align: center;
+      margin: 0 auto 30px;
+    }
+
+    .section-heading h2 {
+      font: clamp(30px, 5vw, 43px) Georgia, serif;
+      margin: 10px 0;
+      color: var(--green);
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .filter {
+      border: 1px solid #d8d8cb;
+      background: transparent;
+      color: var(--green);
+      border-radius: 24px;
+      padding: 10px 17px;
+      cursor: pointer;
+    }
+
+    .filter.active, .filter:hover {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 22px;
+      max-width: 1150px;
+      margin: auto;
+    }
+
+    .food-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #ece9df;
+      box-shadow: 0 6px 20px rgba(20,35,24,.05);
+    }
+
+    .food-card img {
+      width: 100%;
+      height: 185px;
+      object-fit: cover;
+      display: block;
+      background: #e6e1d4;
+    }
+
+    .food-info { padding: 18px; }
+
+    .food-info h3 {
+      margin: 0 0 8px;
+      color: var(--green);
+      font: 22px Georgia, serif;
+    }
+
+    .food-info p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      min-height: 42px;
+    }
+
+    .food-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .price {
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .add-button {
+      border: 0;
+      border-radius: 6px;
+      background: var(--green);
+      color: white;
+      padding: 10px 13px;
+      cursor: pointer;
+    }
+
+    .add-button:hover { background: var(--green-light); }
+
+    .about {
+      background: #f1eee4;
+      text-align: center;
+    }
+
+    .about-content {
+      max-width: 750px;
+      margin: auto;
+    }
+
+    .about p {
+      color: #62685e;
+      line-height: 1.9;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .info-card {
+      text-align: center;
+      background: white;
+      padding: 26px 18px;
+      border-radius: 10px;
+      border: 1px solid #ece9df;
+    }
+
+    .info-card .symbol {
+      font-size: 29px;
+      margin-bottom: 12px;
+    }
+
+    .info-card h3 {
+      color: var(--green);
+      font-family: Georgia, serif;
+    }
+
+    .info-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    footer {
+      background: var(--green);
+      color: white;
+      text-align: center;
+      padding: 30px 5%;
+      line-height: 1.8;
+    }
+
+    footer span { color: var(--gold); }
+
+    .cart-summary {
+      max-width: 700px;
+      margin: 30px auto 0;
+      padding: 20px;
+      background: white;
+      border: 1px solid #e4e0d5;
+      border-radius: 10px;
+    }
+
+    .cart-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-row button {
+      border: 0;
+      padding: 7px 10px;
+      background: #eee9dd;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 19px;
+      font-weight: bold;
+      margin: 18px 0;
+    }
+
+    .empty { color: var(--muted); text-align: center; }
+
+    .notice {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--green);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 5px 20px #0002;
+      z-index: 10;
+      display: none;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      header { justify-content: center; }
+      nav { justify-content: center; gap: 14px; }
+      .hero { padding: 65px 6%; }
+      section { padding: 48px 5%; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    A WARM WELCOME TO ROYAL TASTE · GOOD FOOD, GREAT MOMENTS
+  </div>
+
+  <header>
+    <a class="brand" href="#home">
+      Royal Taste
+      <small>Premium Dining</small>
+    </a>
+
+    <nav aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#menu">Menu</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a class="cart-button" href="#cart">
+        🛒 Cart <span id="cart-count">0</span>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <div class="eyebrow">A taste worth remembering</div>
+        <h1>Good food.<br>Beautiful moments.</h1>
+        <p>
+          Discover delicious flavours, carefully prepared dishes,
+          and a welcoming dining experience at Royal Taste.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="#menu">Explore Our Menu</a>
+          <a class="button-outline" href="#contact">Contact Us</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu">
+      <div class="section-heading">
+        <div class="eyebrow">Made with care</div>
+        <h2>Explore Our Menu</h2>
+        <p>Discover a few of our featured dishes.</p>
+      </div>
+
+      <div class="filters" aria-label="Filter food menu">
+        <button class="filter active" data-category="all">All Dishes</button>
+        <button class="filter" data-category="rice">Rice & Curry</button>
+        <button class="filter" data-category="snacks">Snacks</button>
+        <button class="filter" data-category="drinks">Drinks</button>
+      </div>
+
+      <div class="menu-grid" id="menu-grid">
+        <article class="food-card" data-category="rice">
+          <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80"
+               alt="Rice dish" loading="lazy">
+          <div class="food-info">
+            <h3>Royal Rice Bowl</h3>
+            <p>A satisfying rice dish served with a selection of flavours.</p>
+            <div class="food-bottom">
+              <span class="price">LKR 1,200</span>
+              <button class="add-button" data-id="1">Add +</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="food-card" data-category="rice">
+          <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80"
+               alt="Traditional meal" loading="lazy">
+          <div class="food-info">
+            <h3>Traditional Feast</h3>
+            <p>A hearty meal inspired by traditional home cooking.</p>
+            <div class="food-bottom">
+              <span class="price">LKR 1,500</span>
+              <button class="add-button" data-id="2">Add +</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="food-card" data-category="snacks">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80"
+               alt="Freshly prepared pizza" loading="lazy">
+          <div class="food-info">
+            <h3>Classic Pizza</h3>
+            <p>A popular favourite for sharing with friends and family.</p>
+            <div class="food-bottom">
+              <span class="price">LKR 1,800</span>
+              <button class="add-button" data-id="3">Add +</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="food-card" data-category="snacks">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80"
+               alt="Burger" loading="lazy">
+          <div class="food-info">
+            <h3>Royal Burger</h3>
+            <p>A delicious burger for a satisfying snack or meal.</p>
+            <div class="food-bottom">
+              <span class="price">LKR 1,100</span>
+              <button class="add-button" data-id="4">Add +</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="food-card" data-category="drinks">
+          <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=800&q=80"
+               alt="Refreshing drink" loading="lazy">
+          <div class="food-info">
+            <h3>Fresh Cooler</h3>
+            <p>A refreshing drink to accompany your meal.</p>
+            <div class="food-bottom">
+              <span class="price">LKR 450</span>
+              <button class="add-button" data-id="5">Add +</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="food-card" data-category="drinks">
+          <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=800&q=80"
+               alt="Coffee" loading="lazy">
+          <div class="food-info">
+            <h3>House Coffee</h3>
+            <p>A comforting drink for a relaxing break.</p>
+            <div class="food-bottom">
+              <span class="price">LKR 500</span>
+              <button class="add-button" data-id="6">Add +</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="cart">
+      <div class="section-heading">
+        <div class="eyebrow">Your selection</div>
+        <h2>Your Shopping Cart</h2>
+        <p>Add dishes from the menu to see your order summary.</p>
+      </div>
+
+      <div class="cart-summary">
+        <div id="cart-items">
+          <p class="empty">Your cart is empty. Explore the menu to get started.</p>
+        </div>
+        <div class="cart-total">
+          <span>Total</span>
+          <span id="cart-total">LKR 0</span>
+        </div>
+        <button class="button" id="whatsapp-order" type="button">
+          Order via WhatsApp
+        </button>
+        <p style="font-size:12px;color:#777">
+          Demo: this button needs the restaurant's real WhatsApp number
+          before customer orders can be sent.
+        </p>
+      </div>
+
+      <div class="cart-summary" style="margin-top:24px">
+        <h3>Checkout</h3>
+        <p>Submit an order request to the restaurant.</p>
+        <form id="checkout-form">
+          <label for="order-name">Full name</label>
+          <input id="order-name" name="customerName" required maxlength="80"
+            autocomplete="name" style="display:block;width:100%;padding:12px;margin:6px 0 14px">
+
+          <label for="order-phone">Phone number</label>
+          <input id="order-phone" name="phone" required maxlength="30"
+            type="tel" autocomplete="tel" style="display:block;width:100%;padding:12px;margin:6px 0 14px">
+
+          <label for="order-type">Order type</label>
+          <select id="order-type" name="orderType" required
+            style="display:block;width:100%;padding:12px;margin:6px 0 14px">
+            <option value="delivery">Delivery</option>
+            <option value="takeaway">Takeaway</option>
+          </select>
+
+          <div id="delivery-address-wrap">
+            <label for="order-address">Delivery address</label>
+            <textarea id="order-address" name="address" maxlength="250"
+              style="display:block;width:100%;padding:12px;margin:6px 0 14px"></textarea>
+          </div>
+
+          <label for="order-notes">Special instructions (optional)</label>
+          <textarea id="order-notes" name="notes" maxlength="500"
+            style="display:block;width:100%;padding:12px;margin:6px 0 14px"></textarea>
+
+          <button class="button" type="submit">Submit Order Request</button>
+          <p id="checkout-message" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="about-content">
+        <div class="eyebrow">Our story</div>
+        <h2 style="font:clamp(30px,5vw,43px) Georgia,serif;color:#10271d">
+          A Place for Good Food
+        </h2>
+        <p>
+          At Royal Taste, every meal is an opportunity to bring people
+          together. We believe in welcoming hospitality, memorable flavours,
+          and making every visit special.
+        </p>
+        <a class="button" href="#contact">Get in Touch</a>
+      </div>
+    </section>
+
+
+    <section id="reservations">
+      <div class="section-heading">
+        <div class="eyebrow">Plan your visit</div>
+        <h2>Reserve a Table</h2>
+        <p>Send a reservation request to the restaurant.</p>
+      </div>
+      <div class="cart-summary">
+        <form id="reservation-form">
+          <label for="reservation-name">Full name</label>
+          <input id="reservation-name" name="customerName" required maxlength="80"
+            autocomplete="name" style="display:block;width:100%;padding:12px;margin:6px 0 14px">
+
+          <label for="reservation-phone">Phone number</label>
+          <input id="reservation-phone" name="phone" required maxlength="30"
+            type="tel" autocomplete="tel" style="display:block;width:100%;padding:12px;margin:6px 0 14px">
+
+          <label for="reservation-date">Date</label>
+          <input id="reservation-date" name="date" type="date" required
+            style="display:block;width:100%;padding:12px;margin:6px 0 14px">
+
+          <label for="reservation-time">Time</label>
+          <select id="reservation-time" name="time" required
+            style="display:block;width:100%;padding:12px;margin:6px 0 14px">
+            <option value="">Choose a time</option>
+            <option>10:00 AM</option><option>11:00 AM</option>
+            <option>12:00 PM</option><option>1:00 PM</option>
+            <option>2:00 PM</option><option>3:00 PM</option>
+            <option>5:00 PM</option><option>6:00 PM</option>
+            <option>7:00 PM</option><option>8:00 PM</option>
+            <option>9:00 PM</option>
+          </select>
+
+          <label for="reservation-guests">Number of guests</label>
+          <input id="reservation-guests" name="guests" type="number"
+            min="1" max="30" value="2" required
+            style="display:block;width:100%;padding:12px;margin:6px 0 14px">
+
+          <label for="reservation-notes">Special requests (optional)</label>
+          <textarea id="reservation-notes" name="notes" maxlength="500"
+            style="display:block;width:100%;padding:12px;margin:6px 0 14px"></textarea>
+
+          <button class="button" type="submit">Request Reservation</button>
+          <p id="reservation-message" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+    <section id="contact">
+      <div class="section-heading">
+        <div class="eyebrow">We'd love to hear from you</div>
+        <h2>Visit Royal Taste</h2>
+        <p>Replace these demonstration details with your client's real information.</p>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="symbol">📍</div>
+          <h3>Our Location</h3>
+          <p>Add the restaurant's street address and Google Maps link.</p>
+        </div>
+        <div class="info-card">
+          <div class="symbol">🕒</div>
+          <h3>Opening Hours</h3>
+          <p>Add the real opening days and times.</p>
+        </div>
+        <div class="info-card">
+          <div class="symbol">☎️</div>
+          <h3>Contact</h3>
+          <p>Add the restaurant's phone number and WhatsApp contact.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand" href="#home">Royal Taste</a>
+    <p>Good food. Beautiful moments.</p>
+    <p>© <span id="year"></span> Royal Taste. All rights reserved.</p>
+    <span>Demonstration website — menu items and prices are examples.</span>
+  </footer>
+
+  <div class="notice" id="notice" role="status" aria-live="polite"></div>
+
+  <script>
+    "use strict";
+
+    const dishes = {
+      1: { name: "Royal Rice Bowl", price: 1200 },
+      2: { name: "Traditional Feast", price: 1500 },
+      3: { name: "Classic Pizza", price: 1800 },
+      4: { name: "Royal Burger", price: 1100 },
+      5: { name: "Fresh Cooler", price: 450 },
+      6: { name: "House Coffee", price: 500 }
+    };
+
+    const cart = {};
+    const formatLKR = amount =>
+      "LKR " + amount.toLocaleString("en-US");
+
+    const notice = document.getElementById("notice");
+    let noticeTimeout;
+
+    function showNotice(message) {
+      notice.textContent = message;
+      notice.style.display = "block";
+      clearTimeout(noticeTimeout);
+      noticeTimeout = setTimeout(() => {
+        notice.style.display = "none";
+      }, 2200);
+    }
+
+    document.querySelectorAll(".filter").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".filter").forEach(item =>
+          item.classList.remove("active")
+        );
+        button.classList.add("active");
+
+        const category = button.dataset.category;
+        document.querySelectorAll(".food-card").forEach(card => {
+          card.hidden = category !== "all" &&
+            card.dataset.category !== category;
+        });
+      });
+    });
+
+    document.querySelectorAll(".add-button").forEach(button => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.id;
+        cart[id] = (cart[id] || 0) + 1;
+        renderCart();
+        showNotice(dishes[id].name + " added to your cart.");
+      });
+    });
+
+    function renderCart() {
+      const container = document.getElementById("cart-items");
+      const ids = Object.keys(cart).filter(id => cart[id] > 0);
+      const count = ids.reduce((sum, id) => sum + cart[id], 0);
+      const total = ids.reduce(
+        (sum, id) => sum + dishes[id].price * cart[id], 0
+      );
+
+      document.getElementById("cart-count").textContent = count;
+      document.getElementById("cart-total").textContent = formatLKR(total);
+
+      if (!ids.length) {
+        container.innerHTML =
+          '<p class="empty">Your cart is empty. Explore the menu to get started.</p>';
+        return;
+      }
+
+      container.replaceChildren();
+
+      ids.forEach(id => {
+        const row = document.createElement("div");
+        row.className = "cart-row";
+
+        const label = document.createElement("span");
+        label.textContent = dishes[id].name + " × " + cart[id];
+
+        const amount = document.createElement("strong");
+        amount.textContent = formatLKR(dishes[id].price * cart[id]);
+
+        const controls = document.createElement("span");
+
+        const minus = document.createElement("button");
+        minus.textContent = "−";
+        minus.setAttribute("aria-label", "Remove one " + dishes[id].name);
+        minus.addEventListener("click", () => {
+          cart[id]--;
+          renderCart();
+        });
+
+        const plus = document.createElement("button");
+        plus.textContent = "+";
+        plus.setAttribute("aria-label", "Add one " + dishes[id].name);
+        plus.addEventListener("click", () => {
+          cart[id]++;
+          renderCart();
+        });
+
+        controls.append(minus, document.createTextNode(" "), plus);
+        row.append(label, amount, controls);
+        container.append(row);
+      });
+    }
+
+    document.getElementById("whatsapp-order").addEventListener("click", () => {
+      const ids = Object.keys(cart).filter(id => cart[id] > 0);
+
+      if (!ids.length) {
+        showNotice("Please add a dish to your cart first.");
+        return;
+      }
+
+      showNotice("Demo only: a real WhatsApp number must be configured.");
+    });
+
+
+    const orderType = document.getElementById("order-type");
+    const addressWrap = document.getElementById("delivery-address-wrap");
+    const addressInput = document.getElementById("order-address");
+
+    function updateDeliveryFields() {
+      const delivery = orderType.value === "delivery";
+      addressWrap.hidden = !delivery;
+      addressInput.required = delivery;
+    }
+
+    orderType.addEventListener("change", updateDeliveryFields);
+    updateDeliveryFields();
+
+    document.getElementById("checkout-form").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const message = document.getElementById("checkout-message");
+      const ids = Object.keys(cart).filter(id => cart[id] > 0);
+
+      if (!ids.length) {
+        message.textContent = "Please add dishes to your cart first.";
+        return;
+      }
+
+      const form = event.currentTarget;
+      const button = form.querySelector('button[type="submit"]');
+      const data = new FormData(form);
+      const payload = {
+        customerName: data.get("customerName"),
+        phone: data.get("phone"),
+        orderType: data.get("orderType"),
+        address: data.get("address"),
+        notes: data.get("notes"),
+        items: ids.map(id => ({ id, quantity: cart[id] }))
+      };
+
+      button.disabled = true;
+      message.textContent = "Submitting your test order request...";
+
+      try {
+        const response = await fetch("/api/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+
+        if (!response.ok) throw new Error(result.error || "Order request failed.");
+
+        message.textContent = "Request saved. Reference: " + result.requestId +
+          ". The restaurant has not yet confirmed your order.";
+        for (const id of Object.keys(cart)) delete cart[id];
+        renderCart();
+        form.reset();
+        updateDeliveryFields();
+      } catch (error) {
+        message.textContent = error.message === "Failed to fetch"
+          ? "Could not contact the local server. Check that it is running."
+          : error.message;
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    const reservationDate = document.getElementById("reservation-date");
+    const today = new Date();
+    reservationDate.min = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, "0"),
+      String(today.getDate()).padStart(2, "0")
+    ].join("-");
+
+    document.getElementById("reservation-form").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      const form = event.currentTarget;
+      const message = document.getElementById("reservation-message");
+      const button = form.querySelector('button[type="submit"]');
+      const data = new FormData(form);
+
+      const payload = {
+        customerName: data.get("customerName"),
+        phone: data.get("phone"),
+        date: data.get("date"),
+        time: data.get("time"),
+        guests: Number(data.get("guests")),
+        notes: data.get("notes")
+      };
+
+      button.disabled = true;
+      message.textContent = "Submitting reservation request...";
+
+      try {
+        const response = await fetch("/api/reservations", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+
+        if (!response.ok) throw new Error(result.error || "Reservation request failed.");
+
+        message.textContent = "Request saved. Reference: " + result.requestId +
+          ". Your table is not confirmed until the restaurant confirms it.";
+        form.reset();
+        document.getElementById("reservation-guests").value = "2";
+      } catch (error) {
+        message.textContent = error.message === "Failed to fetch"
+          ? "Could not contact the local server. Check that it is running."
+          : error.message;
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
